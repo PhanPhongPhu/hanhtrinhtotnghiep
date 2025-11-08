@@ -1,0 +1,138 @@
+[
+  {
+    "title": "Khởi đầu hành trình",
+    "date": "06/02/2022",
+    "place": "Bình Định",
+    "coords": [14.133167556887443, 109.15989539731211],
+    "desc": "Quê hương Bình Định, nơi đã nuôi dưỡng tôi, trang bị cho tôi những hành trang quý giá trước khi tôi chính thức bước vào một hành trình mới: hành trình của tri thức, của ước mơ, của sự trưởng thành nơi đất khách.",
+    "img": "https://giadinh.mediacdn.vn/296230595582509056/2022/1/13/xuan-1642091038898695061781.png",
+    "music": ""
+  },
+  {
+    "title": "Đi học quốc phòng nè",
+    "date": "10/02/2022",
+    "place": "Dĩ An, Bình Dương",
+    "coords": [10.890098708733065, 106.80179991199162],
+    "desc": "Nhìn lại, tôi vẫn mỉm cười khi nhớ về những buổi sáng tập trung, dáng người bé nhỏ của tôi giữa đám bạn, làn da cháy nắng. Nhưng chính những khó khăn ấy đã gắn kết chúng tôi lại, tôi đã gặp được những người bạn mới, cùng sẻ chia những khoảnh khắc đáng nhớ.",
+    "img": ["assets/images/quocphong1.webp","assets/images/quocphong2.webp"],
+    "music": ""
+  },
+  {
+    "title": "Lần đầu tới trường, siêu háo hức",
+    "date": "27/02/2022",
+    "place": "Linh Trung, Thủ Đức",
+    "coords": [10.872399740696702, 106.80270389792487],
+    "desc": "Sau những tháng ngày học online triền miên vì dịch bệnh, lần đầu tiên được đặt chân đến giảng đường đại học thực sự là một cảm giác vô cùng tuyệt vời. Không còn nhìn chằm chằm vào màn hình Zoom, không còn những bài giảng trực tuyến nhàm chán.",
+    "img": "assets/images/dihoc1.webp",
+    "music": ""
+  },
+  {
+    "title": "Đi học ở trường",
+    "date": "29/02/2022",
+    "place": "Linh Trung, Thủ Đức",
+    "coords": [10.872399740696702, 106.80270389792487],
+    "desc": "Tôi được hòa mình vào không khí sôi động của đời sống sinh viên, được ngắm nhìn những cảnh quan tươi đẹp của trường, nơi mà mỗi lần ghé thăm, dù là lần đầu tiên hay lần cuối cùng, đều mang một vẻ đẹp nao lòng.",
+    "img": "assets/images/dihoc3.webp",
+    "music": ""
+  },
+  {
+    "title": "Đi thực tế năm 2 tại Phan Rang",
+    "date": "07/06/2023",
+    "place": "Ninh Thuận",
+    "coords": [11.586596620614147, 108.99698693494666],
+    "desc": "Năm hai rồi! Chuyến đi thực tế đầu tiên, nắng như thiêu mà vui cũng nhiều lắm. Phan Rang đẹp lắm, biển xanh, cát trắng, nắng vàng. Dù mệt nhưng ai cũng hào hứng học hỏi, khám phá. Những kỷ niệm này sẽ theo mình suốt cuộc đời.",
+    "img": ["assets/images/phanrang2.webp","assets/images/phanrang1.webp"],
+    "music": ""
+  },
+  {
+    "title": "Đi thực tế Vĩnh Hy",
+    "date": "08/06/2023",
+    "place": "Vĩnh Hy, Ninh Thuận",
+    "coords": [11.714365401917973, 109.2000260725194],
+    "desc": "Phan Rang, nơi nắng vàng như rót mật, đã chào đón chúng tôi bằng cả sự nồng nhiệt lẫn những thử thách. Vĩnh Hy, một bức tranh thủy mặc sống động với biển xanh ngắt, cát trắng mịn và những rặng cây bông giấy bé xíu. ",
+    "img": ["assets/images/vinhhy5.webp","assets/images/vinhhy1.webp","assets/images/vinhhy2.webp"],
+    "music": ""
+  },
+  {
+    "title": "Đi thực tập tại Nhà máy điện Trung Nam",
+    "date": "06/2023",
+    "place": "Ninh Thuận",
+    "coords": [11.433663911696847, 108.85824578259147],
+    "desc": "Lần đầu đặt chân tới nhà máy điện. Giữa những cột điện cao ngất, cảm giác bản thân nhỏ xíu.",
+    "img": "assets/images/trungnam1.webp",
+    "music": ""
+  },
+  {
+    "title": "Đi thực tế môn Viễn thám ở Long An",
+    "date": "08/11/2023",
+    "place": "Long An",
+    "coords": [10.503736222900063, 106.60495853520982],
+    "desc": "Long An, vùng đất miền Tây hiền hòa, nơi những dòng sông lấp lánh ánh mặt trời và con người chân chất, dễ thương. Tôi đã có những ngày vui vẻ, dù làn da có lẽ đã sạm đi dưới cái nắng oi ả.",
+    "img": ["assets/images/longan3.webp","assets/images/longan2.webp","assets/images/longan1.webp"],
+    "music": ""
+  },
+  {
+    "title": "Lên trường USSH cơ sở Q1",
+    "date": "01/12/2023",
+    "place": "Quận 1, Tp. Hồ Chí Minh",
+    "coords": [10.786071475189248, 106.70339524025347],
+    "desc": "Không nhớ rõ hôm đó lên trường làm gì nữa, chắc có việc hệ trọng gì đó hehe",
+    "img": "assets/images/dihoc2.webp",
+    "music": ""
+  },
+  {
+    "title": "Tết – linh vật đáng yêu",
+    "date": "13/02/2024",
+    "place": "Quy Nhơn, Bình Định",
+    "coords": [13.762347951302914, 109.22217137147982],
+    "desc": "Không có liên quan lắm, chỉ là một khoảnh khắc nhỏ, nhưng làm mình nhận ra: dù đi xa cỡ nào, về nhà vẫn là nơi bình yên nhất.",
+    "img": "assets/images/tet.webp",
+    "music": ""
+  },
+  {
+    "title": "Đi thực tế tại Nha Trang",
+    "date": "03–06/06/2024",
+    "place": "Khánh Hòa, Phú Yên",
+    "coords": [12.2388, 109.1967],
+    "desc": "Chuyến thực tế tại Nha Trang, với cơn gió biển mặn mòi, đã mang đến một cảm giác thư thái, bình yên lạ kỳ, khắc sâu vào tâm trí tôi như một dấu ấn của tuổi thanh xuân không hoàn hảo nhưng vô cùng đáng nhớ.",
+    "img": ["assets/images/thuctegis5.webp","assets/images/thuctegis4.webp","assets/images/thuctegis1.webp", "assets/images/thuctegis2.webp"],
+    "music": ""
+  },
+  {
+    "title": "Đi thực tập tốt nghiệp",
+    "date": "03–06/06/2024",
+    "place": "Quận 2",
+    "coords": [10.776276329222762, 106.75457853977137],
+    "desc": "Nơi tôi đã học hỏi được rất nhiều điều quý giá từ các anh chị đồng nghiệp thân thiện và tận tâm. Những ngày tháng thực tập không chỉ giúp tôi áp dụng kiến thức đã học vào thực tế mà còn mở rộng tầm nhìn, giúp tôi hiểu rõ hơn về ngành nghề mình đã chọn.  ",
+    "img": ["assets/images/thuctap1.webp","assets/images/thuctap2.webp"],
+    "music": ""
+  },
+  {
+    "title": "Bảo vệ đồ án",
+    "date": "17/06/2025",
+    "place": "Quận 1, Tp. Hồ Chí Minh",
+    "coords": [10.786071475189248, 106.70339524025347],
+    "desc": "Ngày bảo vệ đồ án - một cột mốc đáng nhớ. Tim đập thình thịch, mồ hôi tuôn rơi, tay run run, nhưng ba năm miệt mài học tập, nghiên cứu đã được đền đáp xứng đáng.",
+    "img": "assets/images/bctn1.webp",
+    "music": ""
+  },
+  {
+    "title": "Ngày đầu tiên đi làm",
+    "date": "08/09/2025",
+    "place": "Tân Bình",
+    "coords": [10.80117173062219, 106.65051381148983],
+    "desc": "Mọi thứ đều mới mẻ, lạ lẫm, nhưng tôi cảm nhận được sự thân thiện từ đồng nghiệp và niềm vui khi được học hỏi thêm những kiến thức chuyên ngành mới. Mỗi ngày trôi qua, tôi thấy mình đang dần trưởng thành, đang sống với chính lựa chọn và đam mê của mình.",
+    "img": ["assets/images/dilam1.webp", "assets/images/dilam2.webp"],
+    "music": ""
+  },
+  {
+    "title": "Ngày tốt nghiệp",
+    "date": "13/11/2025",
+    "place": "Khu đô thị ĐHQG-HCM, TP. Thủ Đức",
+    "coords": [10.8783, 106.805],
+    "desc": "......đang tải",
+    "img": "",
+    "music": "",
+    "isGraduation": true
+  }
+]
