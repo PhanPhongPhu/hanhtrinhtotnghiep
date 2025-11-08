@@ -1,0 +1,484 @@
+/* ùuuu giỏi vậy tarrr, biết vào trong này luôn. Xem thôi đừng phá đấy nhá =)) */
+#root, * {
+  box-sizing: border-box;
+}
+/* Improved typography and base styles */
+body, html {
+  height: 100%;
+  margin: 0;
+  font-family: Inter, "Segoe UI", Roboto, system-ui, -apple-system, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #222;
+  background: radial-gradient(1200px 600px at 10% 10%, rgba(46,204,113,0.06), transparent), #000;
+}
+#map {
+  position: fixed;
+  inset: 0;
+}
+
+/* Overlay chung */
+.overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.55));
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .28s ease, backdrop-filter .28s ease;
+  backdrop-filter: blur(2px);
+}
+.overlay.show,
+.overlay:not(.hidden) {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Card trong overlay */
+.card {
+  background: linear-gradient(180deg,#ffffffef,#ffffffdf);
+  color: #222;
+  max-width: 760px;
+  padding: 22px 24px;
+  border-radius: 14px;
+  box-shadow: 0 18px 40px rgba(7,10,14,0.45);
+  border: 1px solid rgba(0,0,0,0.04);
+}
+.card.wide { max-width: 920px; }
+
+h1 { margin: 0 0 10px; font-size: 28px; letter-spacing: -0.2px; }
+h2 { margin: 0 0 12px; font-size: 20px; }
+.hl { color: #f5c243; font-weight: 800; }
+
+.btn {
+  border: none;
+  border-radius: 10px;
+  padding: 10px 14px;
+  background: #f2f3f5;
+  color: #111;
+  cursor: pointer;
+  transition: transform .16s ease, box-shadow .16s ease, background .18s;
+  display: inline-flex; align-items:center; gap:8px;
+  box-shadow: 0 6px 18px rgba(9,10,12,0.06);
+}
+.btn:hover { transform: translateY(-2px); }
+.btn:active { transform: translateY(0); }
+.btn-primary { background: linear-gradient(90deg,#2ecc71,#28b76b); color: #fff; box-shadow: 0 10px 30px rgba(46,204,113,0.18); }
+.btn-secondary { background: linear-gradient(90deg,#6c757d,#5b656b); color: #fff; }
+
+.row { display: flex; gap: 10px; margin-top: 8px; }
+.hint { font-size: 12px; opacity: .86; }
+
+/* Popup Leaflet */
+/* 🩹 Sửa lỗi ảnh tràn ra ngoài popup Leaflet */
+/* Leaflet popup fixes: ensure images scale inside popup */
+.leaflet-popup-content-wrapper {
+  overflow: hidden;                 /* giữ ảnh trong khung */
+}
+
+.leaflet-popup-content {
+  overflow-x: hidden;               /* tránh tràn ngang */
+  overflow-y: auto;                 /* vẫn cuộn nếu nội dung dài */
+  max-width: 480px;                 /* khống chế bề rộng popup */
+  word-wrap: break-word;
+}
+
+.leaflet-popup-content img,
+.leaflet-popup-content .event-img,
+.leaflet-popup-content .img-row img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+}
+
+.img-row {
+  display: flex;
+  justify-content: center; /* center images inside popup */
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 8px 0;
+  margin-top: 8px;
+  border-radius: 10px;              /* bo tròn đều phần ảnh */
+  scroll-behavior: smooth;
+}
+
+/* Two sizing modes: few (1-2 images) shows larger thumbnails; many (3+) shows smaller to fit popup */
+.img-row.few .event-img {
+  width: 140px;
+  height: 95px;
+}
+.img-row.many .event-img {
+  width: 96px;
+  height: 72px;
+}
+
+.img-row::-webkit-scrollbar {
+  height: 6px;
+}
+.img-row::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.25);
+  border-radius: 10px;
+}
+
+.event-img {
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 8px 22px rgba(8,12,16,0.12);
+  flex-shrink: 0;
+  transition: transform 0.22s cubic-bezier(.2,.9,.2,1), box-shadow 0.22s;
+  /* width/height are defined by .img-row.{few|many} to keep consistent sizing */
+}
+
+/* indicate zoomable images */
+.event-img { cursor: zoom-in; }
+
+/* Floating image preview (centered) */
+#imgPreview {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(.96);
+  background: rgba(12,16,20,0.55);
+  padding: 8px;
+  border-radius: 10px;
+  box-shadow: 0 20px 48px rgba(6,10,14,0.5);
+  z-index: 1400;
+  opacity: 0;
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity .18s ease, transform .18s ease;
+}
+#imgPreview.hidden { display: none; }
+#imgPreview.visible { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+#imgPreview img {
+  /* reduce preview size to be modest and not overwhelm the map */
+  max-width: min(66vw, 640px);
+  max-height: min(60vh, 560px);
+  border-radius: 8px;
+  object-fit: contain;
+  display: block;
+}
+#imgPreview .hint {
+  position: absolute; bottom: 8px; right: 12px; color: rgba(255,255,255,0.85); font-size: 12px; opacity: .9;
+}
+
+/* Lightbox gallery */
+#lightbox {
+  position: fixed; inset: 0; display:flex; align-items:center; justify-content:center;
+  background: rgba(6,8,10,0.75); z-index:1500; opacity:0; pointer-events:none; transition:opacity .18s ease;
+}
+#lightbox.visible { opacity: 1; pointer-events: auto; }
+#lightbox .box { position: relative; max-width: 88vw; max-height: 84vh; }
+#lightbox img { display:block; max-width:100%; max-height:100%; border-radius:10px; }
+#lightbox .nav { position:absolute; top:50%; transform:translateY(-50%); width:44px; height:44px; border-radius:10px; background: rgba(0,0,0,0.35); color:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer; }
+#lightbox .nav.prev { left:-56px; }
+#lightbox .nav.next { right:-56px; }
+#lightbox .close { position:absolute; right:-40px; top:-40px; width:36px; height:36px; border-radius:8px; background: rgba(255,255,255,0.1); color:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer; }
+#lightbox .caption { margin-top:8px; text-align:center; color:#fff; opacity:.9; font-size:14px; }
+
+@media (max-width:600px) {
+  #lightbox .nav { width:40px; height:40px; }
+  #lightbox .nav.prev { left: 8px; }
+  #lightbox .nav.next { right: 8px; }
+  #lightbox .close { right: 8px; top: 8px; }
+}
+.leaflet-popup-content .img-row { justify-content: center; }
+
+.event-img:hover {
+  transform: translateY(-6px) scale(1.04);
+  box-shadow: 0 18px 36px rgba(8,12,16,0.18);
+}
+
+/* Hiệu ứng sao & pháo hoa */
+#fireworks, #starfield {
+  position: fixed; left: 0; top: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+}
+#fireworks { z-index: 400; opacity: 0; transition: opacity 2s ease; }
+#starfield { z-index: 300; }
+
+/* Overlay nằm trên */
+.overlay { z-index: 500; }
+.hidden { display: none !important; }
+
+/* Timeline ảnh dưới */
+#timeline {
+  position: fixed;
+  bottom: 0; left: 0;
+  width: 100%; height: 120px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(255,255,255,0.9));
+  backdrop-filter: blur(6px);
+  box-shadow: 0 -10px 30px rgba(6,10,14,0.16);
+  display: flex; align-items: center;
+  opacity: 0; pointer-events: none;
+  transition: transform .48s cubic-bezier(.2,.9,.2,1), opacity 0.36s ease;
+  transform: translateY(12px);
+  z-index: 600;
+}
+#timeline.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
+
+#timelineContent {
+  display: flex; gap: 10px;
+  overflow-x: auto; padding: 8px 14px;
+  scroll-behavior: smooth;
+}
+.timeline-img {
+  width: 120px; height: 90px; border-radius: 12px;
+  object-fit: cover; opacity: 0; transform: translateY(6px) scale(0.98);
+  transition: opacity 0.34s cubic-bezier(.2,.9,.2,1), transform 0.34s;
+  box-shadow: 0 8px 22px rgba(8,12,16,0.12);
+}
+.timeline-img.show { opacity: 1; transform: translateY(0) scale(1); }
+
+/* === Thanh điều khiển chính === */
+#controls {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transition: bottom .35s ease, opacity .36s ease, transform .3s ease;
+  transform: translateX(-50%);
+  z-index: 1100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  pointer-events: auto;
+}
+
+/* subtle floating panel look for controls */
+#controls .panel {
+  background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(250,250,250,0.9));
+  padding: 10px 14px;
+  border-radius: 14px;
+  box-shadow: 0 18px 40px rgba(8,12,16,0.12);
+  display: flex; flex-direction: column; gap:8px; align-items:center;
+}
+
+/* Hàng nút */
+#controls .button-row {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Thanh tiến trình */
+#progressContainer {
+  width: 320px;
+  height: 8px;
+  background: rgba(255,255,255,0.3);
+  border-radius: 999px;
+  overflow: hidden;
+  box-shadow: inset 0 -1px 8px rgba(0,0,0,0.06);
+}
+#progressBar {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg,#2ecc71,#26b36a);
+  transition: width 0.48s cubic-bezier(.2,.9,.2,1);
+}
+
+/* Nút chung */
+#controls .btn {
+  display: flex; justify-content: center; align-items: center;
+  gap: 8px; font-size: 0.95rem; font-weight: 600;
+  padding: 10px 16px; border: none; border-radius: 10px;
+  cursor: pointer; transition: transform 0.16s ease, box-shadow 0.16s ease;
+  min-width: 82px;
+}
+#controls .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 18px rgba(8,12,16,0.12); }
+
+/* Màu nút */
+.btn-primary { background: #2ecc71; color: white; }
+.btn-secondary { background: #6c757d; color: white; }
+
+/* Timeline toggle */
+#toggleTimelineBtn {
+  background: #2ecc71;
+  color: #fff;
+  transition: background 0.3s ease, transform 0.16s ease;
+}
+#toggleTimelineBtn.off { background: #6c757d; }
+
+/* AutoPlay đang chạy */
+#autoPlayBtn.active {
+  background: linear-gradient(90deg,#2ecc71,#28b76b);
+  color: #fff;
+}
+
+/* === Typing Overlay === */
+#typingOverlay {
+  position: fixed;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.2rem;
+  max-width: 92%;
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+  font-weight: 500;
+  z-index: 1200;
+  line-height: 1.4em;
+  word-break: break-word;
+  white-space: normal !important;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  #controls { width: 96%; bottom: 110px; }
+  #controls .btn { flex: 1 1 auto; min-width: 68px; padding: 8px 10px; font-size: 0.86rem; }
+  #timeline { height: 100px; }
+  .timeline-img { width: 90px; height: 70px; }
+  .card { padding: 14px; }
+  #typingOverlay { font-size: 1.05rem; top: 12%; line-height: 1.3em; padding: 0 6px; }
+}
+
+@media (max-width: 480px) {
+  #typingOverlay { font-size: 0.95rem; top: 14%; line-height: 1.25em; }
+  #controls { bottom: 96px; }
+}
+/* ==== Panel điều khiển dạng “tấm” trắng ==== */
+#controls {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 40px;
+  z-index: 1100;
+  transition: bottom .35s ease, opacity .36s ease, transform .3s ease;
+}
+
+#controls .panel.compact{
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 16px 40px rgba(8,12,16,.16);
+  padding: 10px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Thanh tiến trình mảnh nằm trong tấm */
+#progressContainer.slim{
+  width: 260px;   /* có thể tăng/giảm */
+  height: 6px;
+  background: rgba(0,0,0,.08);
+  border-radius: 999px;
+  overflow: hidden;
+}
+#progressContainer.slim #progressBar{
+  background: #2ecc71;
+  height: 100%;
+  width: 0%;
+  transition: width .4s ease;
+}
+
+/* Hàng nút */
+#controls .toolbar{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Nút icon trung tính */
+.icon-btn{
+  width: 44px; height: 44px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 0; background: #f4f6f8; color: #222;
+  border-radius: 12px; cursor: pointer;
+  transition: transform .15s ease, background .15s ease;
+}
+.icon-btn:hover{ transform: translateY(-2px); background:#eef1f4; }
+.icon-btn:active{ transform: translateY(0); }
+
+.icon{ width: 22px; height: 22px; display:block; }
+
+/* Nút Auto có chữ */
+.icon-btn.with-label{ padding: 0 12px; width: auto; gap: 8px; }
+.icon-btn.with-label .label{ font-weight: 600; font-size: 14px; }
+
+/* Khi autoplay đang chạy: đổi nền nhẹ */
+#autoPlayBtn.active{ background:#e8fff1; color:#24b66a; }
+
+/* Nút Next màu xanh nổi bật, tròn mép phải */
+.cta-next{
+  height: 44px; min-width: 44px;
+  padding: 0 14px;
+  border: 0; border-radius: 12px;
+  background: #2ecc71; /* nền xanh như ảnh */
+  display: inline-flex; align-items:center; justify-content:center;
+  cursor: pointer;
+  transition: transform .15s ease, filter .15s ease;
+}
+.cta-next:hover{ transform: translateY(-2px); filter: brightness(1.02); }
+.cta-next:active{ transform: translateY(0); }
+
+/* Giữ tương thích mobile: panel hẹp vẫn 1 hàng */
+@media (max-width: 768px){
+  #controls .panel.compact{ padding: 8px 10px 10px; }
+  #progressContainer.slim{ width: 220px; height: 5px; }
+  .icon-btn{ width: 42px; height: 42px; }
+  .icon{ width: 21px; height: 21px; }
+  .icon-btn.with-label .label{ font-size: 13px; }
+}
+
+/* Nút timeline bật/tắt chỉ đổi màu (đang tắt -> xám) */
+#toggleTimelineBtn.off{ background:#e1e4e8; color:#666; }
+
+/* Đảm bảo controls nhảy lên khi timeline mở (đã có JS tính) */
+#controls{ pointer-events:auto; }
+/* ==== Căn giữa nội dung và nút trong popup ==== */
+.overlay .card {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Căn giữa riêng phần các hàng nút */
+.overlay .row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+/* Nút chính trong popup (vd: “Bắt đầu hành trình”) to và nằm giữa */
+.overlay .card .btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 14px auto 0 auto;   /* ✅ căn giữa */
+  font-size: 1.05rem;
+  padding: 12px 24px;
+  border-radius: 10px;
+}
+
+/* Responsive nhỏ vẫn giữ căn giữa */
+@media (max-width: 768px) {
+  .overlay .card { padding: 16px; }
+  .overlay .card .btn-primary {
+    font-size: 1rem;
+    padding: 10px 22px;
+  }
+}
+/* Giảm khoảng cách giữa các dòng trong popup */
+.leaflet-popup-content h3 {
+  margin-bottom: 2px;      
+  line-height: 1.2;       
+}
+
+.leaflet-popup-content p {
+  margin-top: 1px;          
+  margin-bottom: 9px;     
+  line-height: 1.35;     
+}

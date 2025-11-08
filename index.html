@@ -1,0 +1,134 @@
+<!-- ùuuu giỏi vậy tarrr, biết vào trong này luôn. Xem thôi đừng phá đấy nhá =)) -->
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Hành Trình Tốt Nghiệp | Phan Phong Phú</title>
+
+  <!-- 🔹 Mô tả & chia sẻ -->
+  <meta name="description" content="Hành trình tốt nghiệp của Phan Phong Phú – từ Bình Định đến Sài Gòn, với đam mê GIS và những kỷ niệm đáng nhớ.">
+  <meta property="og:title" content="Hành trình tốt nghiệp của Phan Phong Phú" />
+  <meta property="og:description" content="Bốn năm cùng những bản đồ, đồ án, và bạn bè thân thương." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="favicon.ico.png" />
+  <meta name="theme-color" content="#2ecc71" />
+
+  <link rel="icon" type="image/png" href="assets/images/kihieu1.png" />
+  <link rel="preload" href="style.css" as="style" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div id="map"></div><!-- Timeline -->
+  <div id="timeline">
+    <div id="timelineContent"></div>
+  </div>
+
+  <!-- Intro -->
+  <section id="intro" class="overlay show">
+    <div class="card">
+      <h1>Hành trình tốt nghiệp của <span class="hl">Phan Phong Phú</span></h1>
+      <p>Bốn năm. Chỉ vỏn vẹn bốn năm, vậy mà nghe sao dài đằng đẵng, như một cuốn phim quay chậm, 
+        lật qua từng khung cảnh quen thuộc, từng gương mặt thân thương. Bốn năm ấy, không chỉ là những con chữ, 
+        những công thức khô khan trên giảng đường, mà còn là cả một hành trình trưởng thành đầy cảm xúc, 
+        là hành trang quý giá mà tôi mang theo khi bước ra thế giới rộng lớn ngoài kia.</p>
+      <button id="startBtn" class="btn btn-primary">🚀 Bắt đầu hành trình</button>
+      <p class="hint">Mở loa lên nhé!!!</p>
+    </div>
+  </section>
+
+  <!-- Kết thúc hành trình -->
+  <section id="storyOverlay" class="overlay hidden">
+    <div class="card wide">
+      <h2>🎓 Khép Lại Một Chặng Đường, Mở Ra Triệu Giấc Mơ</h2>
+      <p>Giờ đây, khi cánh cửa đại học khép lại, tôi biết rằng một hành trình mới đang mở ra, 
+        một hành trình của những giấc mơ lớn hơn, những thử thách mới lạ hơn. Dù đi đến đâu, làm gì, 
+        tôi sẽ luôn mang theo bên mình những bài học quý giá từ mái trường này, từ những người thầy, 
+        người bạn thân thương. Những dòng dữ liệu trên bản đồ hôm nay, không chỉ là kết quả của kiến thức, 
+        mà còn là câu chuyện về một trái tim đầy nhiệt huyết, một tinh thần kiên cường, 
+        và một tình yêu vô bờ bến dành cho sự nghiệp mà tôi đã chọn. 
+        Cảm ơn, cảm ơn thật nhiều!</p>
+      <div class="row">
+        <button id="showFriendsBtn" class="btn">Xem những người bạn của tôi 👥</button>
+        <button id="closeStoryBtn" class="btn btn-secondary">Đóng</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 💌 Lời mời dự lễ -->
+  <section id="inviteOverlay" class="overlay hidden">
+    <div class="card wide">
+      <h2>💌 Lời mời dự lễ tốt nghiệp</h2>
+      <p><b>Vào lúc 8g ngày 13/11/2025</b>, rất mong được gặp mọi người tại
+      <b>Trường Đại học Khoa học Xã hội và Nhân văn - ĐHQGHCM, Khu đô thị ĐHQG-HCM, P. Linh Xuân, TP.HCM</b> 
+      để cùng nhau đánh dấu cột mốc tốt nghiệp.</p>
+
+      <!-- Nhạc nền -->
+      <audio id="bgm" preload="auto" loop>
+        <source src="assets/audio/nhacnen2.mp3" type="audio/mpeg">
+      </audio>
+
+      <!-- Nhạc pháo hoa -->
+      <audio id="fireworkSound" preload="auto" loop>
+        <source src="assets/audio/nhacnen1.mp3" type="audio/mpeg">
+      </audio>
+
+      <div class="row">
+        <button id="inviteCloseBtn" class="btn btn-primary">Hẹn gặp mọi người tại buổi lễ!</button>
+      </div>
+    </div>
+  </section>
+
+<!--Điều khiển & tiến trình -->
+<div id="controls">
+  <div class="panel compact">
+    <!-- Thanh tiến trình mảnh trên cùng -->
+    <div id="progressContainer" class="slim">
+      <div id="progressBar"></div>
+    </div>
+
+    <!-- Hàng nút -->
+    <div class="toolbar">
+      <button id="prevBtn" class="icon-btn" disabled aria-label="Trước">
+        <!-- chevron-left -->
+        <svg viewBox="0 0 24 24" class="icon"><path d="M15 18l-6-6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+
+      <button id="muteBtn" class="icon-btn" aria-label="Âm thanh">
+        <!-- speaker -->
+        <svg viewBox="0 0 24 24" class="icon"><path d="M11 5l-4 4H4v6h3l4 4V5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M15 9a3 3 0 010 6m2-8a6 6 0 010 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+
+      <button id="toggleTimelineBtn" class="icon-btn" aria-label="Ảnh kỷ niệm">
+        <!-- image -->
+        <svg viewBox="0 0 24 24" class="icon"><rect x="3" y="5" width="18" height="14" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="8.5" cy="10" r="1.5" fill="currentColor"/><path d="M21 17l-5-5-4 4-2-2-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+
+      <button id="autoPlayBtn" class="icon-btn with-label" aria-label="Tự động">
+        <!-- play + chữ Auto -->
+        <svg viewBox="0 0 24 24" class="icon"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+        <span class="label">Auto</span>
+      </button>
+
+      <button id="nextBtn" class="cta-next" aria-label="Tiếp">
+        <!-- chevron-right -->
+        <svg viewBox="0 0 24 24" class="icon cta"><path d="M9 6l6 6-6 6" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+  <!-- Thư viện -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js" defer></script>
+
+  <canvas id="starfield"></canvas>
+  <canvas id="fireworks"></canvas>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
+<!-- ùuuu giỏi vậy tarrr, biết vào trong này luôn. Xem thôi đừng phá đấy nhá =)) -->
+  
